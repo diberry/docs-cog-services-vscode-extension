@@ -1,42 +1,76 @@
 {
-	"name": "docs-cog-services-vscode-extension",
-	"displayName": "docs-cog-services-vscode-extension",
-	"description": "docs-cog-services-vscode-extension",
-	"version": "0.0.1",
-	"publisher": "vscode-samples",
-	"repository": "https://github.com/diberry/docs-cog-services-vscode-extension",
-	"engines": {
-		"vscode": "^1.25.0"
-	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-		"onCommand:extension.helloCode"
-	],
-	"main": "./out/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": "extension.helloCode",
-				"title": "Hello Code"
-			}
-		]
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"postinstall": "node ./node_modules/vscode/bin/install"
-	},
-	"devDependencies": {
-		"@types/node": "^8.10.25",
-		"tslint": "^5.11.0",
-		"typescript": "^2.6.1",
-		"vscode": "^1.1.21"
-	},
-	"dependencies": {
-		"docs-cog-services": "0.0.1-a",
-		"dotenv": "^6.1.0"
-	}
+    "name": "cogsvcs-keyphrases",
+    "displayName": "cogsvcs-keyphrases",
+    "description": "Identify keyphrases of doc using Microsoft Cognitive Services Text Analytics",
+    "version": "0.0.2",
+    "engines": {
+        "vscode": "^1.28.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onCommand:extension.CogServKeyWords"
+    ],
+    "main": "./out/extension",
+    "contributes": {
+        "commands": [
+            {
+                "command": "extension.CogServKeyWords",
+                "title": "CogServKeyWords"
+            },
+            {
+                "configuration": {
+                    "type": "object",
+                    "title": "CognitiveServices-TextAnalytics configuration",
+                    "properties": {
+                        "CogServKeyWords.key": {
+                            "type": [
+                                "string",
+                                "null"
+                            ],
+                            "default": null,
+                            "description": "Text analytics resource key."
+                        },
+                        "CogServKeyWords.host": {
+                            "type": [
+                                "string",
+                                "null"
+                            ],
+                            "default": null,
+                            "description": "Text analytics host including region - `westus.api.cognitive.microsoft.com`"
+                        },
+                        "CogServKeyWords.route": {
+                            "type": [
+                                "string",
+                                "null"
+                            ],
+                            "default": null,
+                            "description": "Text analytics route - `/text/analytics/v2.0/keyPhrases`"
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "yarn run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "yarn run compile && node ./node_modules/vscode/bin/test"
+    },
+    "dependencies": {
+        "@types/underscore": "^1.8.9",
+        "docs-cog-services": "^0.0.1-a",
+        "underscore": "^1.9.1"
+    },
+    "devDependencies": {
+        "@types/dotenv": "^6.1.0",
+        "@types/mocha": "^2.2.42",
+        "@types/node": "^8.10.25",
+        "tslint": "^5.8.0",
+        "typescript": "^2.6.1",
+        "vscode": "^1.1.21"
+    }
 }
