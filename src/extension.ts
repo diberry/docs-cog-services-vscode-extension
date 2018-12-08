@@ -10,6 +10,20 @@ import {Readable} from "stream";
 // npm link docs-cog-services
 // command palette - look for 'CogServKeyWords'
 
+/*
+Notes with Josee
+
+Include headers (instead of remove) 
+Add synonyms
+Add plural and singular
+remove branded
+add acronynms
+add title and description
+remove duplicates
+add weights
+add misspellings
+add user-entered filter terms
+*/
 
 class Headers{
     found: boolean=false;
