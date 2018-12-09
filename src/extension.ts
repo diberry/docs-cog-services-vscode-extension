@@ -45,7 +45,7 @@ export function activate(context: vscode.ExtensionContext) {
         let tocMgr = new TocManager();
 
         tocMgr.processFileAsync(activeFileName).then((responseAsObject) => {
-            vscode.window.showInformationMessage(JSON.stringify(responseAsObject);
+            vscode.window.showInformationMessage(JSON.stringify(responseAsObject));
         }).catch((err) => {
 			console.log(err);
 		});
