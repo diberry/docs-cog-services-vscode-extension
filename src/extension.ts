@@ -2,7 +2,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { MarkdownFileManager } from "docs-cog-services";
+import { TocManager } from "docs-cog-services";
 
 
 //https://medium.com/@the1mills/how-to-test-your-npm-module-without-publishing-it-every-5-minutes-1c4cb4b369be
@@ -17,6 +17,7 @@ export function activate(context: vscode.ExtensionContext) {
     // This line of code will only be executed once when your extension is activated
     console.log('Congratulations, your extension "cogsvcs-keyphrases" is now active!');
     console.log(process.versions);
+    console.log(__dirname);
 
     //const key=String("200639587e7c4b99a60986332d6f9b39");
     //const uri=String("westus.api.cognitive.microsoft.com");
@@ -39,11 +40,12 @@ export function activate(context: vscode.ExtensionContext) {
             return;
         }
         let text = activeEditor.document.getText();
+        let activeFileName = activeEditor.document.fileName; //c:\Users\diberry\repos\azure-docs-pr-3\articles\cognitive-services\LUIS\luis-boundaries.md
 
-        let docFileMgr = new MarkdownFileManager();
-        
-        docFileMgr.processFile(text,config).then((response) => {
-            vscode.window.showInformationMessage(response.join(","));
+        let tocMgr = new TocManager();
+
+        tocMgr.processFileAsync(activeFileName).then((responseAsObject) => {
+            vscode.window.showInformationMessage(JSON.stringify(responseAsObject));
         }).catch((err) => {
 			console.log(err);
 		});
