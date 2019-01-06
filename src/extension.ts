@@ -19,7 +19,7 @@ export function activate(context: vscode.ExtensionContext) {
     console.log(process.versions);
     console.log(__dirname);
 
-    //const key=String("200639587e7c4b99a60986332d6f9b39");
+    const key=String("6dd5c0606bed4b709984fde010610073");
     //const uri=String("westus.api.cognitive.microsoft.com");
     //const route=String("/text/analytics/v2.0/keyPhrases");
 
@@ -28,6 +28,8 @@ export function activate(context: vscode.ExtensionContext) {
         uri: vscode.workspace.getConfiguration().get("CogServKeyWords.uri"),
         route: vscode.workspace.getConfiguration().get("CogServKeyWords.route")
     }
+
+    console.log(config);
 
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with  registerCommand
@@ -39,13 +41,30 @@ export function activate(context: vscode.ExtensionContext) {
         if (!activeEditor) {
             return;
         }
-        let text = activeEditor.document.getText();
-        let activeFileName = activeEditor.document.fileName; //c:\Users\diberry\repos\azure-docs-pr-3\articles\cognitive-services\LUIS\luis-boundaries.md
+        let doc = activeEditor.document;
+        let tocMgr = new TocManager(config);
+        let currentText = doc.getText();
 
-        let tocMgr = new TocManager();
+        let tocInfo = {
+            absolutePath:  doc.fileName,
+            text:  currentText,
+            isDirty: doc.isDirty
+        };
 
-        tocMgr.processFileAsync(activeFileName).then((responseAsObject) => {
-            vscode.window.showInformationMessage(JSON.stringify(responseAsObject));
+        console.log(tocInfo);
+
+        tocMgr.getKeywordsAsync(tocInfo).then((newText) => {
+
+            activeEditor.edit(editBuilder => {
+
+                // line 0, position 0, 
+                // last line, last position
+                let range = new vscode.Range(new vscode.Position(0,0),doc.lineAt(doc.lineCount-1).range.end);
+                editBuilder.replace(range, newText);
+
+                vscode.window.showInformationMessage("File contents have keywords now");
+
+            });
         }).catch((err) => {
 			console.log(err);
 		});
