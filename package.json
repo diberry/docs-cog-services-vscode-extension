@@ -14,44 +14,63 @@
     ],
     "main": "./out/extension",
     "contributes": {
+            "configuration": {
+            "type": "object",
+            "title": "Cog Serv",
+            "properties": {
+                "CogServKeyWords.resourcename": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "default": "diberry-text-analytics",
+                    "markdownDescription": "Text analytics resource name."
+                },
+                "CogServKeyWords.key": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "default": "eacf2fb8075d46d2b2ae3576d2656766",
+                    "markdownDescription": "Text analytics resource key."
+                },
+                "CogServKeyWords.host": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "default": "https://westus.api.cognitive.microsoft.com",
+                    "markdownDescription": "Text analytics host including region - `westus.api.cognitive.microsoft.com`"
+                },
+                "CogServKeyWords.route": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "default": "/text/analytics/v2.0/keyPhrases",
+                    "markdownDescription": "Text analytics route - `/text/analytics/v2.0/keyPhrases`"
+                },
+                "CogServKeyWords.maxCount": {
+                    "type": [
+                        "number"
+                    ],
+                    "default": 20,
+                    "markdownDescription": "Max array of phrases to return, Default: 20"
+                },
+                "CogServKeyWords.filterout": {
+                    "type": "array",
+                    "default": ["Azure"],
+                    "markdownDescription": "Words to filter out of result - `Default: Azure`"
+                }
+            }
+        },     
         "commands": [
             {
                 "command": "extension.CogServKeyWords",
                 "title": "CogServKeyWords"
-            },
-            {
-                "configuration": {
-                    "type": "object",
-                    "title": "CognitiveServices-TextAnalytics configuration",
-                    "properties": {
-                        "CogServKeyWords.key": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "default": null,
-                            "description": "Text analytics resource key."
-                        },
-                        "CogServKeyWords.host": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "default": null,
-                            "description": "Text analytics host including region - `westus.api.cognitive.microsoft.com`"
-                        },
-                        "CogServKeyWords.route": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "default": null,
-                            "description": "Text analytics route - `/text/analytics/v2.0/keyPhrases`"
-                        }
-                    }
-                }
             }
         ]
+        
     },
     "scripts": {
         "vscode:prepublish": "yarn run compile",

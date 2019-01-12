@@ -19,14 +19,14 @@ export function activate(context: vscode.ExtensionContext) {
     console.log(process.versions);
     console.log(__dirname);
 
-    const key=String("6dd5c0606bed4b709984fde010610073");
-    //const uri=String("westus.api.cognitive.microsoft.com");
-    //const route=String("/text/analytics/v2.0/keyPhrases");
+    let workSpaceConfiguration = vscode.workspace.getConfiguration('CogServKeyWords');
 
     const config = {
-        key: vscode.workspace.getConfiguration().get("CogServKeyWords.key"),
-        uri: vscode.workspace.getConfiguration().get("CogServKeyWords.uri"),
-        route: vscode.workspace.getConfiguration().get("CogServKeyWords.route")
+        key: workSpaceConfiguration.key,
+        uri: workSpaceConfiguration.uri,
+        route: workSpaceConfiguration.route,
+        filterout: workSpaceConfiguration.filterout,
+        maxCount: workSpaceConfiguration.maxCount
     }
 
     console.log(config);
@@ -51,9 +51,14 @@ export function activate(context: vscode.ExtensionContext) {
             isDirty: doc.isDirty
         };
 
+        // remove only filter words but leave rest of keyword phrase
+        let options = {
+            "removeFromPhrase":true
+        };
+
         console.log(tocInfo);
 
-        tocMgr.getKeywordsAsync(tocInfo).then((newText) => {
+        tocMgr.getKeywordsAsync(tocInfo,null,options).then((newText) => {
 
             activeEditor.edit(editBuilder => {
 
