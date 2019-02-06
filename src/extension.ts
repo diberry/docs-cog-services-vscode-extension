@@ -13,13 +13,25 @@ import { TocManager } from "docs-cog-services";
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
+    /*
+    ,
+    "CogServKeyWords.key":"6fa5dc75f09b482c9826be2f4551af4a",
+    "CogServKeywords.uri":"westus.api.cognitive.microsoft.com",
+    "CogServKeywords.route":"/text/analytics/v2.0/keyPhrases"
+    */
+
     // Use the console to output diagnostic information (console.log) and errors (console.error)
     // This line of code will only be executed once when your extension is activated
     console.log('Congratulations, your extension "cogsvcs-keyphrases" is now active!');
-    console.log(process.versions);
-    console.log(__dirname);
+    console.log("processs.versions = " + process.versions);
+    console.log("__dirname = " + __dirname);
 
     let workSpaceConfiguration = vscode.workspace.getConfiguration('CogServKeyWords');
+
+    if (!workSpaceConfiguration || !workSpaceConfiguration.key || !workSpaceConfiguration.uri || !workSpaceConfiguration.route){
+        console.log("VSCode extension CogServKeyWords expected workspace settings but didn't find them.");
+        return;
+    }
 
     const config = {
         key: workSpaceConfiguration.key,
@@ -56,9 +68,12 @@ export function activate(context: vscode.ExtensionContext) {
             "removeFromPhrase":true
         };
 
-        console.log(tocInfo);
+        console.log(JSON.stringify(tocInfo));
 
         tocMgr.getKeywordsAsync(tocInfo,null,options).then((newText) => {
+
+            console.log("newtext");
+            console.log(newText);
 
             activeEditor.edit(editBuilder => {
 
